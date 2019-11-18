@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<div class="contain">
+    <div class="row">
+        <div class="col-sm-3 col-lg-3"></div>
+        <div class="col-sm-6 col-lg-6">
+            <!-- 面板开始 -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <!-- 标题 -->
+                    <h2 class="panel-title">
+                        <h1>Login System </h1>
+                        <span class="badge badge-info">Most simple demo only for test SQL inject</span>
+                    </h2>
+                </div>
+                <!-- 内容 -->
+                <div class="panel-body">
+                    <form method="POST" role="form">
+                        <div class="form-group ">
+                            <label for="user">User Name</label>
+                            <input class="form-control" id="user" name="user" placeholder="Fill you name" type="input">
+                        </div>
+                        <div class="form-group ">
+                            <label for="passwd">Password </label>
+                            <input class="form-control" id="passwd" name="passwd" type="password">
+                        </div>
+                        <!-- <div class="switch" data-on="primary" data-off="info"> -->
+                        <!-- <input type="checkbox" id="filter_switch" checked /> -->
+                        <!-- </div> -->
+                        <label class="control-label" for="Filtered the input text">Filtered the input text</label>
+                        <input id="filter_switch" type="checkbox"/>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="radio form-check">
+                                    <label class="form-check-label">
+                                        <input checked class="form-check-input" id="v1" name="API" type="radio"
+                                               value="v1/login"> SQLite3
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="radio form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="v2" name="API" type="radio"
+                                               value="v2/login"> Mysql injectable
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="radio form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" id="v3" name="API" type="radio"
+                                               value="v3/login"> Mysql uninjectable
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <!-- <a name="" id="postdata" class="btn btn-primary" href="#" role="button">Submit</a> -->
+                                <button class="btn btn-primary btn-lg btn-block" id="postdata" name="" type="button">
+                                    Submit
+                                </button>
+                                <!-- <button type="button" class="btn btn-primary">Submit</button> -->
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label for="first"></label>
+                            <input type="text" name="" id="first" class="form-control" placeholder="" aria-describedby="helpId" >
+                            <small id="helpId" class="text-muted">Help text</small>
+                        </div>
+                    </form> -->
+                </div>
+                <div id="showresult">
+                    <span class="badge badge-pill badge-info">Please Login in</span>
+                </div>
+
+            </div>
+            <!-- 面板结束 -->
+        </div>
+        <div class="col-sm-3 col-lg-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <!-- 留白 -->
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+        <div class="col-sm-3">
+            <!-- 留白 -->
+        </div>
+    </div>
+
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<!-- 自定义ajax -->
+<script>
+    function filter(text) {
+        var black_list = ["'", "\"", "<", ">", "-", "#"];
+        if (text.length > 16) return -1;
+        for (i in black_list) {
+            // alert(text.indexOf(black_list[i]));
+            if (text.indexOf(black_list[i]) > -1) return -2;
+        }
+
+        return 0;
+    }
+
+    $("#postdata").click(function () {
+        $("#more").attr('disabled', false);
+        var val = $('input:radio:checked').val();
+        var url = "";
+        if (val) {
+            url = val;
+        }
+
+        user = $("#user").val();
+        xxx = $("#passwd").val();
+
+        // alert($("#filter_switch").prop("checked"));
+        if ($("#filter_switch").prop("checked")) {
+
+            if (!xxx || !user) {
+                $("#showresult").html("<span class=\"badge badge-pill badge-danger\">" + 'User or password is empty!' + "</span>");
+                return;
+            }
+            if (filter(user) == -1) {
+                $("#showresult").html("<span class=\"badge badge-pill badge-danger\">" + 'Input text too long!' + "</span>");
+                return;
+            }
+            if (filter(user) == -2) {
+                $("#showresult").html("<span class=\"badge badge-pill badge-danger\">" + '!!!Illegal character!!!' + "</span>");
+                return;
+            }
+
+        }
+        payload = {"user": user, "password": xxx};
+
+        $.post(url, payload, function (result, code) {
+            json = $.parseJSON(result);
+            if (json["code"] == "1") {
+                $("#showresult").html("<span class=\"badge badge-pill badge-success\">" + json["token"] + "</span>");
+                s = "user_token=" + json["token"] + "&user=" + user;
+                $.get('/v1/edit', "user_token=" + json["token"] + "&user=" + user, function (data) {
+
+                });
+            } else {
+                $("#showresult").html("<span class=\"badge badge-pill badge-warning\">" + json["msg"] + "</span>");
+            }
+
+        });
+
+    });
+
+</script>
+</body>
+
+</html>
